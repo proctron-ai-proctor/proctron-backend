@@ -1,7 +1,8 @@
-POST http://localhost:3000/users/login
+POST http://localhost:3000/users/register
 Content-Type: application/json
 
 {
-    "email": "slayer@gmail.com", 
-    "password": "slayit"
+    "email": "edmund@gmail.com", 
+    "name": "edmund",
+    "password": "slayer"
 }

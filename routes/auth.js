@@ -32,7 +32,7 @@ auth.post('/login', async(req, res) => {
         res.status(401).send({auth: false, message: "incorrect password"})
       }
     }
-  } catch (error){
+  } catch(error) {
     res.status(500).send({auth: false, message: "internal error"})
   }
 })
@@ -53,7 +53,7 @@ auth.post('/register', async (req, res) => {
     {
       res.status(409).send({auth: false, message: "email already exists"})
     }
-  } catch {
+  } catch(error) {
     res.status(500).send({auth: false, message: "internal error"})
   }
 })
