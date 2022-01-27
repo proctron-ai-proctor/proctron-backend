@@ -1,8 +1,7 @@
-POST http://localhost:3000/users/register
+POST http://localhost:8080/exam/credentials
 Content-Type: application/json
 
-{
-    "email": "edmund@gmail.com", 
-    "name": "edmund",
-    "password": "slayer"
-}
+
+{"type":"offer","sdp":"v=0\r\no=- 5254579856380033393 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 55401 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 192.168.56.1\r\na=candidate:2999745851 1 udp 2122260223 192.168.56.1 55401 typ host generation 0 network-id 1\r\na=candidate:559267639 1 udp 2122202367 ::1 55402 typ host generation 0 network-id 3\r\na=candidate:1510613869 1 udp 2122129151 127.0.0.1 55403 typ host generation 0 network-id 2\r\na=candidate:4233069003 1 tcp 1518280447 192.168.56.1 8783 typ host tcptype passive generation 0 network-id 1\r\na=candidate:1876313031 1 tcp 1518222591 ::1 8784 typ host tcptype passive generation 0 network-id 3\r\na=candidate:344579997 1 tcp 1518149375 127.0.0.1 8785 typ host tcptype passive generation 0 network-id 2\r\na=ice-ufrag:CeW8\r\na=ice-pwd:w0HOmgsEs1WLvSNefNAGirvL\r\na=ice-options:trickle\r\na=fingerprint:sha-256 8E:0A:33:31:B1:3B:02:32:67:CA:AF:18:E9:F4:07:A5:82:51:4C:6B:7D:52:F8:72:0F:81:D8:1D:98:56:44:7D\r\na=setup:actpass\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"}
+
+
