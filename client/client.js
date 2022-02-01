@@ -3,7 +3,7 @@ const io = require('socket.io-client')
 
 const client = new wrtc.RTCPeerConnection()
 
-const socket = io('http://localhost:3000')
+const socket = io.connect('http://localhost:3000', {query: {email: 'slayer@gmail.com'}})
 var readyForIce = false
 var remoteIceCandidates = []
 
