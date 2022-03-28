@@ -23,4 +23,5 @@ decode = async (string, iv) => {
   decrypted = decrypted + decipher.final()
   return JSON.parse(decrypted)
 }
+
 module.exports = { encode, decode }

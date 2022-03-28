@@ -12,7 +12,7 @@ randomIdentifier = (size = 10) => {
   return identifier.replace(pat, '$1-$2-$3')
 }
 
-cred.get('/create-credentials', async (req, res) => {
+cred.post('/create-credentials', async (req, res) => {
   try {
     const identifier = randomIdentifier()
     const timestamp = new Date().toISOString()

@@ -96,4 +96,23 @@ auth.post('/verify-otp', async (req, res) => {
     res.status(500).send({ auth: false, message: 'internal error' })
   }
 })
+
+auth.post('/resend-otp', async (req, res) => {
+  try {
+    var payload = JSON.parse(req.body.payload)
+    const decoded = await decode(payload.encoded, Buffer.from(payload.iv.data))
+    payload = await verifyMail(decoded.user)
+    res.status(200).send({
+      auth: false,
+      message: {
+        info: 'OTP resend',
+        payload: JSON.stringify(payload)
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ auth: false, message: 'internal error' })
+  }
+})
+
 module.exports = auth
