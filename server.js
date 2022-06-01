@@ -1,6 +1,6 @@
 const express = require("express");
 const auth = require("./routes/auth");
-const examCreds = require("./routes/examCreds");
+const examiner = require("./routes/examiner");
 const master = require("./routes/exam");
 const jwt = require("jsonwebtoken");
 const key = require("./keys/jwt-token.json");
@@ -30,7 +30,7 @@ const userAuth = (req, res, next) => {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users", auth);
-app.use("/exam", userAuth, examCreds);
+app.use("/examiner", userAuth, examiner);
 
 // io.use((socket, next) => {
 //   const token = socket.handshake.auth.token
