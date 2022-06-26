@@ -1,6 +1,8 @@
 const express = require("express");
 const auth = require("./routes/auth");
-const examCreds = require("./routes/examCreds");
+const examiner = require("./routes/examiner");
+const examinee = require("./routes/examinee");
+const audio = require("./routes/handleAudio");
 const master = require("./routes/exam");
 const jwt = require("jsonwebtoken");
 const key = require("./keys/jwt-token.json");
@@ -9,7 +11,7 @@ const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const bodyParser = require("body-parser");
 
-server.listen(3000);
+server.listen(3000, '0.0.0.0');
 
 const userAuth = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -27,10 +29,12 @@ const userAuth = (req, res, next) => {
   }
 };
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users", auth);
-app.use("/exam", userAuth, examCreds);
+app.use("/examiner", userAuth, examiner);
+app.use("/examinee", userAuth, examinee);
+app.use("/audio-transcript", audio);
 
 // io.use((socket, next) => {
 //   const token = socket.handshake.auth.token

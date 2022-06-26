@@ -25,6 +25,7 @@ auth.post("/login", async (req, res) => {
           message: {
             email: validUser.email,
             name: validUser.name,
+            role: validUser.role,
             token: generateToken({ email: validUser.email }),
           },
         });
@@ -48,6 +49,7 @@ auth.post("/register", async (req, res) => {
       const user = {
         name: req.body.name,
         email: req.body.email,
+        role: req.body.role,
         password: hashedPassword,
       };
       const payload = await verifyMail(user);
