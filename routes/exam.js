@@ -1,6 +1,10 @@
 const kurento = require("kurento-client");
 const uuid = require("uuid");
 
+const request = require("request");
+const child_process = require('child_process');
+const fs = require("fs");
+
 module.exports = class kurentoWebRTC {
   constructor(socket, id, user) {
     var sessions = {};
@@ -11,6 +15,7 @@ module.exports = class kurentoWebRTC {
       ws_uri: "ws://127.0.0.1:8888/kurento",
       file_uri: `file:///tmp/${user}-${uuid.v4()}.webm`,
     };
+    this.av = argv;
     
     const getKurentoClient = (callback) => {
       if (kurentoClient !== null) {
@@ -162,11 +167,40 @@ module.exports = class kurentoWebRTC {
         }
       }
     });
-    socket.on("exam/stop", () => {
+    socket.on("exam/stop", async () => {
       if (sessions[id]) {
         var pipeline = sessions[id].pipeline;
         pipeline.release();
         console.log(`stopped ${user}`);
+
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        child_process.exec('call ./mv_recorded_videos.bat', function(error, stdout, stderr) {
+            console.log(stderr);
+            console.log(stdout);
+        });
+
+        const pyBackendURL = 'http://7542-35-247-40-248.ngrok.io';
+        const splitname = this.av.file_uri.split('/');
+        const filename = splitname[splitname.length - 1];
+
+        const options = {
+          method: "POST",
+          url: pyBackendURL,
+          headers: {
+              "Content-Type": "multipart/form-data"
+          },
+          formData : {
+              "file" : fs.createReadStream(`./vids/${filename}`),
+              "email": user,
+              "examId": 1234,
+              "isForTraining": true
+          }
+        };
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        request(options, function (err, res, body) {
+            if(err) console.log(err);
+            console.log(body);
+        });
       }
     });
   }

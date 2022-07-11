@@ -44,22 +44,24 @@ oauth2Client.getToken('4/0AX4XfWjGAPnghT6D2dYzptkvQhxyxKGjK-8Bl8VLMW4oY9QxQHGdbB
     console.log(token);
 }) */
 
-examiner.get("/create-credentials", async (req, res) => {
+examiner.post("/create-credentials", async (req, res) => {
+  console.log(req.body);
   try {
     const identifier = randomIdentifier();
     const timestamp = new Date().toISOString();
-    const { allotedTime, maxScore, formID } = req.body;
-    const response = await fetchForm(formID);
+    const { allotedTime, maxScore, formId } = req.body;
+    const response = await fetchForm(formId);
+    console.log(response);
     await ref
       .collection("users")
-      .doc(req.user.email)
+      .doc(req.body.email)
       .collection("exam_ids")
       .doc(identifier)
       .set({
         timestamp: timestamp,
       });
     await ref.collection("exams").doc(identifier).set({
-      examiner_id: req.user.email,
+      examiner_id: req.body.email,
       timestamp: timestamp,
       alloted_time: allotedTime,
       max_score: maxScore,
@@ -73,6 +75,7 @@ examiner.get("/create-credentials", async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ auth: false, message: "internal error" });
   }
 });
@@ -86,8 +89,15 @@ examiner.get("/update-credentials", async (req, res) => {
     } else {
       const response = await fetchForm(formID);
       const timestamp = new Date().toISOString();
+      console.log({
+        examiner_id: req.body.email,
+        timestamp: timestamp,
+        alloted_time: allotedTime,
+        max_score: maxScore,
+        exam_struct: response.data.items,
+      });
       await ref.collection("exams").doc(credentials).set({
-        examiner_id: req.user.email,
+        examiner_id: req.body.email,
         timestamp: timestamp,
         alloted_time: allotedTime,
         max_score: maxScore,

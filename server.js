@@ -10,10 +10,12 @@ const app = express();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const bodyParser = require("body-parser");
+const pyBackend = require("./routes/python-backend");
 
 server.listen(3000, '0.0.0.0');
 
 const userAuth = (req, res, next) => {
+  console.log(req.headers);
   const authHeader = req.headers["authorization"];
   if (authHeader == null) {
     res.status(401).send({ message: "provide authorization token" });
@@ -35,6 +37,7 @@ app.use("/users", auth);
 app.use("/examiner", userAuth, examiner);
 app.use("/examinee", userAuth, examinee);
 app.use("/audio-transcript", audio);
+app.use("/py-backend", pyBackend);
 
 // io.use((socket, next) => {
 //   const token = socket.handshake.auth.token
